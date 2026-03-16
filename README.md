@@ -157,4 +157,4 @@ And it will call the `pdf-document` tool with something like:
 
 ## License
 
-ISC
+MIT

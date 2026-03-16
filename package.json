@@ -2,11 +2,15 @@
   "name": "mcp-pdfkit",
   "version": "1.0.0",
   "type": "module",
+  "description": "Lightweight MCP server for PDF generation using pdfkit",
   "main": "server.js",
+  "bin": "server.js",
+  "files": [
+    "server.js"
+  ],
   "scripts": {
     "start": "node server.js"
   },
-  "description": "Lightweight MCP server for PDF generation using pdfkit",
   "dependencies": {
     "fastmcp": "^3.34.0",
     "pdfkit": "^0.18.0",
