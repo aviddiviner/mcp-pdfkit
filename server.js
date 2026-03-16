@@ -118,7 +118,9 @@ Supports flowing content that automatically paginates: text, headings, images, s
 
 Returns the absolute file path to the generated PDF. Use built-in PDF fonts only (Helvetica, Times-Roman, Courier and their bold/italic variants).
 
-IMPORTANT: Built-in PDF fonts do NOT support emoji or special Unicode symbols. Do not include emoji characters in text — they will be stripped automatically. Use plain text descriptions instead.`,
+IMPORTANT: Built-in PDF fonts do NOT support emoji or special Unicode symbols. Do not include emoji characters in text — they will be stripped automatically. Use plain text descriptions instead.
+
+After generating a PDF, offer to open it for the user using the file:// URI returned in the result.`,
   parameters: z.object({
     filename: z
       .string()
@@ -280,7 +282,7 @@ IMPORTANT: Built-in PDF fonts do NOT support emoji or special Unicode symbols. D
     await writeFile(outPath, pdfBuffer);
 
     const fileUri = `file://${outPath}`;
-    return `PDF created successfully: ${fileUri} (${pdfBuffer.length} bytes, ${doc.bufferedPageRange().count} page(s))`;
+    return `PDF created successfully: ${fileUri} (${pdfBuffer.length} bytes, ${doc.bufferedPageRange().count} page(s))\n\nOffer to open the file for the user.`;
   },
 });
 
