@@ -2,28 +2,7 @@
 
 A lightweight MCP server for generating PDFs using [PDFKit](https://pdfkit.org/). One file, simple schemas, no bloat.
 
-## Install
-
-```bash
-npm install
-```
-
 ## Usage
-
-### With Zed
-
-Add to your Zed settings (`⌘ + ,`):
-
-```json
-{
-  "context_servers": {
-    "mcp-pdfkit": {
-      "command": "node",
-      "args": ["/path/to/mcp-pdfkit/server.js"]
-    }
-  }
-}
-```
 
 ### With Claude Desktop
 
@@ -33,8 +12,23 @@ Add to your Claude Desktop config:
 {
   "mcpServers": {
     "pdfkit": {
-      "command": "node",
-      "args": ["/path/to/mcp-pdfkit/server.js"]
+      "command": "npx",
+      "args": ["-y", "mcp-pdfkit"]
+    }
+  }
+}
+```
+
+### With Zed
+
+Add to your Zed settings (`⌘ + ,`):
+
+```json
+{
+  "context_servers": {
+    "mcp-pdfkit": {
+      "command": "npx",
+      "args": ["-y", "mcp-pdfkit"]
     }
   }
 }
@@ -150,8 +144,8 @@ And it will call the `pdf-document` tool with something like:
 
 ## How it works
 
-- **fastmcp** handles the MCP protocol (stdio transport)
-- **pdfkit** generates the PDF
+- **[fastmcp](https://github.com/punkpeye/fastmcp)** handles the MCP protocol (stdio transport)
+- **[pdfkit](https://pdfkit.org/)** generates the PDF
 - PDFs are written to a temp directory and a `file://` URI is returned
 - Schemas are flat and simple — no recursive types, no `$ref` — compatible with all model providers including Amazon Bedrock
 
