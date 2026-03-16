@@ -1,6 +1,6 @@
 {
   "name": "mcp-pdfkit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "Lightweight MCP server for PDF generation using pdfkit",
   "main": "server.js",
@@ -20,6 +20,7 @@
     "ai"
   ],
   "dependencies": {
+    "emoji-regex": "^10.6.0",
     "fastmcp": "^3.34.0",
     "pdfkit": "^0.18.0",
     "zod": "^4.3.6"

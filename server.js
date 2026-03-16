@@ -5,10 +5,16 @@ import PDFDocument from "pdfkit";
 import { writeFile, mkdtemp, realpath } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
+import emojiRegex from "emoji-regex";
+import pkg from "./package.json" with { type: "json" };
+
+function stripUnsupportedChars(text) {
+  return text.replace(emojiRegex(), "").trim();
+}
 
 const server = new FastMCP({
   name: "mcp-pdfkit",
-  version: "1.0.0",
+  version: pkg.version,
 });
 
 // Schema for a single content block in the PDF
@@ -110,7 +116,9 @@ server.addTool({
 
 Supports flowing content that automatically paginates: text, headings, images, spacers, dividers, and page breaks.
 
-Returns the absolute file path to the generated PDF. Use built-in PDF fonts only (Helvetica, Times-Roman, Courier and their bold/italic variants).`,
+Returns the absolute file path to the generated PDF. Use built-in PDF fonts only (Helvetica, Times-Roman, Courier and their bold/italic variants).
+
+IMPORTANT: Built-in PDF fonts do NOT support emoji or special Unicode symbols. Do not include emoji characters in text — they will be stripped automatically. Use plain text descriptions instead.`,
   parameters: z.object({
     filename: z
       .string()
@@ -188,10 +196,12 @@ Returns the absolute file path to the generated PDF. Use built-in PDF fonts only
     for (const item of content) {
       switch (item.type) {
         case "text": {
+          const textContent = stripUnsupportedChars(item.text);
+          if (!textContent) break;
           doc.font(item.font ?? "Helvetica");
           doc.fontSize(item.fontSize ?? 12);
           doc.fillColor(item.color ?? "#000000");
-          doc.text(item.text, {
+          doc.text(textContent, {
             align: item.align ?? "left",
             width: contentWidth,
             lineGap: item.lineGap ?? 0,
@@ -201,10 +211,12 @@ Returns the absolute file path to the generated PDF. Use built-in PDF fonts only
         }
 
         case "heading": {
+          const headingContent = stripUnsupportedChars(item.text);
+          if (!headingContent) break;
           doc.font(item.font ?? "Helvetica-Bold");
           doc.fontSize(item.fontSize ?? 24);
           doc.fillColor(item.color ?? "#000000");
-          doc.text(item.text, {
+          doc.text(headingContent, {
             align: item.align ?? "left",
             width: contentWidth,
           });
